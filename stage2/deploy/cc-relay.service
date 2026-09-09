@@ -1,0 +1,24 @@
+[Unit]
+Description=Cubic Castles remote-control relay
+Documentation=https://github.com/david3246fr/cubic-castles-bot
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=@USER@
+WorkingDirectory=@STAGE2@
+EnvironmentFile=@ENVFILE@
+ExecStart=@PYTHON@ -u @STAGE2@/cc_relay.py
+Restart=on-failure
+RestartSec=3
+
+# --- light hardening ---
+# Deliberately NOT using ProtectHome/ProtectSystem here: the relay writes its
+# bindings store (relay_state.json) inside its own working dir under /home, and a
+# read-only home makes that write silently fail (bindings then never persist).
+NoNewPrivileges=true
+PrivateTmp=true
+
+[Install]
+WantedBy=multi-user.target

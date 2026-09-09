@@ -1,0 +1,5 @@
+# Force LF for files that must run on Linux, regardless of the committer's OS /
+# core.autocrlf. A shell script or systemd unit with CRLF fails on the server.
+*.sh            text eol=lf
+*.service       text eol=lf
+*.env.example   text eol=lf

@@ -1,0 +1,128 @@
+# ==========================================================================
+#  SECRETS — never commit. These hold auth tokens, Steam IDs, account IDs,
+#  session keys, or reusable cleartext login frames.
+# ==========================================================================
+
+# Login / identity profiles (contain token + steam_id + account_id)
+*profile*.json
+*_profile.json
+login_profile.json
+worker_profile.json
+profile.json
+
+# Remote-control secrets: the exe's relay password (bot_id) and local remote
+# config; the relay's bindings store (maps Discord user ids <-> bot_ids). In dev
+# these can land beside the scripts; in the exe/relay they live outside the repo.
+bot_id.json
+remote.json
+relay_state.json
+relay_state.json.tmp
+
+# ==========================================================================
+#  SERVER-ONLY code — must NEVER hit GitHub. The relay and the Discord bot run
+#  only on the operator's Linux box (next to the secrets + trust model); they
+#  are delivered out-of-band (scp), not through the repo. Keeping them out of
+#  git is deliberate — do not add them back.
+# ==========================================================================
+stage2/cc_relay.py
+stage2/cc_discord_bot.py
+cc_relay.py
+cc_discord_bot.py
+
+# Backups of profiles / any timestamped .bak
+*.bak
+*.bak-*
+*.bak-*-*
+
+# Packet captures — can contain XXTEA session keys and plaintext auth
+stage2/captures/
+capture_*.log
+*.jsonl
+
+# Auth capture OUTPUT (plaintext credentials) — but keep the .py tool source
+*auth*capture*.log
+*auth*capture*.jsonl
+*auth*capture*.txt
+*auth*dump*
+
+# All logs (bot stdout, debug frames, capture runs)
+*.log
+
+# Databases (large, regenerable, contain scraped market/order data)
+*.db
+*.sqlite
+*.sqlite3
+
+# ==========================================================================
+#  Python noise
+# ==========================================================================
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.venv/
+venv/
+env/
+*.egg-info/
+
+# Personal config a downloader fills in (their own copy stays local)
+config.json
+
+# systemd service secrets (RELAY_ADMIN_TOKEN, DISCORD_TOKEN). The real env file
+# lives at /etc/cubic-castles/ on the server; ignore any stray local copy. The
+# committed template is *.env.example (see the keep-list below).
+*.env
+
+# ==========================================================================
+#  ...but DO keep the example/template files (they hold only placeholders)
+# ==========================================================================
+!*.example.json
+!profile.example.json
+!config.example.json
+!*.env.example
+
+# ==========================================================================
+#  OS / editor noise
+# ==========================================================================
+.DS_Store
+Thumbs.db
+desktop.ini
+*.swp
+.idea/
+.vscode/
+
+# PyInstaller build intermediates (rebuildable; large .pkg files)
+stage2/build/
+build/
+*.spec
+
+# ==========================================================================
+#  Local runtime data & research dumps — regenerated at runtime (the exe
+#  keeps its real copies in %APPDATA%\CubicBot). Kept out to keep the repo clean.
+# ==========================================================================
+stage2/blocks-*.txt
+building-world-*.json
+stage2/realms.json
+stage2/vends.json
+stage2/watchlist.json
+stage2/quiz_learned.json
+
+# Full/large exe build — kept out of the repo (build from source if needed)
+stage2/dist/cubic-bot-full.exe
+
+# ==========================================================================
+#  Experimental / dropped features — kept LOCAL only (build the full exe from
+#  these), never published to GitHub. Repo ships TP, GUID, vend scan, Discord.
+# ==========================================================================
+stage2/cc_builder.py
+stage2/cc_live_builder.py
+stage2/cc_quiz.py
+stage2/cc_translate.py
+stage2/find_hold_guid.py
+stage2/test_building_protocol.py
+stage2/test_cc_builder.py
+stage2/test_cc_live_builder.py
+stage2/test_cc_translate.py
+stage2/requirements-translate.txt
+BUILDING_RESEARCH.md
+stage2/docs/TRANSLATOR.md
